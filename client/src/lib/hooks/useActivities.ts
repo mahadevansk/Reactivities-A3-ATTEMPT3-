@@ -3,9 +3,12 @@ import agent from "../api/agent";
 
 
 
-export const useActivities = () => {
+export const useActivities = (id?: string) => {
 
-  const queryClient = useQueryClient() 
+  const queryClient = useQueryClient();
+
+
+
       const {data: activities, isPending} = useQuery({
     queryKey:['activities'], 
     queryFn:async () => {
@@ -13,6 +16,22 @@ export const useActivities = () => {
       return response.data
     }
   });
+
+
+  const {data: activity, isLoading: isLoadingActivity} = useQuery({
+    queryKey:['activities', id],
+    queryFn: async () => {
+      const response = await agent.get<Activity>(`/activities/${id}`);
+      return response.data;
+    },
+    enabled : !!id // This is imortant or notalbe thing 
+    // if this id is not there also this will fetch thee data if this enabled is not there
+    // so !!id converts this id into boolean and calls this data fetch 
+    // if the id is available otherwise it will not fetch 
+
+  })
+
+
 
 
   const updateActivity = useMutation  ( {
@@ -29,8 +48,8 @@ export const useActivities = () => {
 
   const createActivity = useMutation ( {
     mutationFn:async(activity:Activity) => {
-      await agent.post('/activities', activity)
-
+      const response = await agent.post('/activities', activity)
+      return response.data;
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({
@@ -58,7 +77,9 @@ export const useActivities = () => {
     isPending, 
     updateActivity, 
     createActivity,
-    deleteActivity
+    deleteActivity,
+    activity,
+    isLoadingActivity
   }
 
 
