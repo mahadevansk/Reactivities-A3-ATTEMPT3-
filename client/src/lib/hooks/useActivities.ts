@@ -1,11 +1,14 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import agent from "../api/agent";
+import { useLocation } from "react-router";
 
 
 
 export const useActivities = (id?: string) => {
 
   const queryClient = useQueryClient();
+
+  const location = useLocation();
 
 
 
@@ -14,7 +17,11 @@ export const useActivities = (id?: string) => {
     queryFn:async () => {
       const response = await agent.get<Activity[]>('/activities')
       return response.data
-    }
+
+        },
+        enabled: !id && location.pathname === '/activities',
+        staleTime: 1000 * 60 * 1 // this will wait this much time to get the data from the cache 
+        // by default it will get the data from the cache instanntly 
   });
 
 
