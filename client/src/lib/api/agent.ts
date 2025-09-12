@@ -1,5 +1,5 @@
 import axios from "axios";
-import { store } from "../stores/Store";
+import { store } from "../stores/store";
 
 const agent = axios.create({
     baseURL:import.meta.env.VITE_API_URL
