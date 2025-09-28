@@ -30,7 +30,6 @@ public class ActivitiesController : BaseApiController
     {
         //var activity = await context.Activities.FindAsync(id);
 
-        throw new Exception("Test Exception");
 
        return HandleResult(await Mediator.Send(new GetActivitiesDetails.Query { Id = id }));
         // if (activity == null)
@@ -45,9 +44,9 @@ public class ActivitiesController : BaseApiController
     }
 
     [HttpPut]
-    public async Task<ActionResult> EditActivity(Activity activity)
+    public async Task<ActionResult> EditActivity(EditActivityDto activity)
     {
-        return HandleResult (await Mediator.Send(new EditActivity.Command { Activity = activity }));
+        return HandleResult (await Mediator.Send(new EditActivity.Command { ActivityDto = activity }));
     
     }
 
