@@ -2,11 +2,9 @@ import { createContext } from "react";
 import CounterStore from "./counterStore";
 import { UiStore } from "./uiStore";
 
-
 interface Store {
     counterStore: CounterStore
     uiStore: UiStore
-    
 }
 
 export const store: Store = {

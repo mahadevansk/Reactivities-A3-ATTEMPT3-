@@ -1,4 +1,4 @@
-import { Paper, Typography, List, ListItem, Chip, ListItemAvatar, Avatar, ListItemText, Grid } from "@mui/material";
+import { Paper, Typography, List, ListItem, Chip, ListItemAvatar, Avatar, ListItemText, Grid2 } from "@mui/material";
 
 export default function ActivityDetailsSidebar() {
     const following = true;
@@ -19,8 +19,8 @@ export default function ActivityDetailsSidebar() {
                 </Typography>
             </Paper>
             <Paper sx={{ padding: 2 }}>
-                <Grid container alignItems="center">
-                    <Grid size={8}>
+                <Grid2 container alignItems="center">
+                    <Grid2 size={8}>
                         <List sx={{ display: 'flex', flexDirection: 'column' }}>
                             <ListItem>
                                 <ListItemAvatar>
@@ -34,8 +34,8 @@ export default function ActivityDetailsSidebar() {
                                 </ListItemText>
                             </ListItem>
                         </List>
-                    </Grid>
-                    <Grid size={4} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 1 }}>
+                    </Grid2>
+                    <Grid2 size={4} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 1 }}>
                         {isHost && (
                             <Chip
                                 label="Host"
@@ -49,8 +49,8 @@ export default function ActivityDetailsSidebar() {
                                 Following
                             </Typography>
                         )}
-                    </Grid>
-                </Grid>
+                    </Grid2>
+                </Grid2>
             </Paper>
         </>
     );

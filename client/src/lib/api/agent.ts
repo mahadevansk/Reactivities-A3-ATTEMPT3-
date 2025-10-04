@@ -3,18 +3,15 @@ import { store } from "../stores/store";
 import { toast } from "react-toastify";
 import { router } from "../../app/router/Routes";
 
-
-const agent = axios.create({
-    baseURL:import.meta.env.VITE_API_URL
-});
-
 const sleep = (delay: number) => {
     return new Promise(resolve => {
-        setTimeout(resolve,delay)
+        setTimeout(resolve, delay)
     });
 }
 
-
+const agent = axios.create({
+    baseURL: import.meta.env.VITE_API_URL
+});
 
 agent.interceptors.request.use(config => {
     store.uiStore.isBusy();
@@ -23,22 +20,21 @@ agent.interceptors.request.use(config => {
 
 agent.interceptors.response.use(
     async response => {
-        await sleep(1000)
-        store.uiStore.isIdle();
+        await sleep(1000);
+        store.uiStore.isIdle()
         return response;
     },
-    async errors => {
+    async error => {
         await sleep(1000);
-
         store.uiStore.isIdle();
 
-        const { status, data } = errors.response;
+        const { status, data } = error.response;
         switch (status) {
             case 400:
                 if (data.errors) {
                     const modalStateErrors = [];
                     for (const key in data.errors) {
-                        if (data.errors[key]){
+                        if (data.errors[key]) {
                             modalStateErrors.push(data.errors[key]);
                         }
                     }
@@ -46,22 +42,21 @@ agent.interceptors.response.use(
                 } else {
                     toast.error(data);
                 }
-
                 break;
             case 401:
-                toast.error('Unauthorized');
+                toast.error('Unauthorised');
                 break;
             case 404:
-                router.navigate('/not-found')
+                router.navigate('/not-found');
                 break;
             case 500:
-                router.navigate('/server-error',{state:{error:data}});
+                router.navigate('/server-error', {state: {error: data}})
                 break;
-        
             default:
                 break;
         }
-        return Promise.reject(errors);
+
+        return Promise.reject(error);
     }
 );
 
