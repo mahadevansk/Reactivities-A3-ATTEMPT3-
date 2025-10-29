@@ -15,8 +15,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllers(opt =>
 {
-    var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
-    opt.Filters.Add(new AuthorizeFilter(policy));
+    // var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+    // opt.Filters.Add(new AuthorizeFilter(policy));
 });
 builder.Services.AddDbContext<AppDbContext>(opt =>
 {
@@ -54,6 +54,11 @@ app.UseAuthorization();
 
 app.MapControllers();
 app.MapGroup("api").MapIdentityApi<User>(); // api/login
+
+DeveloperExceptionPageOptions developerExceptionPageOptions = new DeveloperExceptionPageOptions
+{
+    SourceCodeLineCount = 100
+};
 
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;

@@ -10,7 +10,8 @@ const sleep = (delay: number) => {
 }
 
 const agent = axios.create({
-    baseURL: import.meta.env.VITE_API_URL
+    baseURL: import.meta.env.VITE_API_URL,
+    withCredentials:true
 });
 
 agent.interceptors.request.use(config => {
@@ -27,6 +28,12 @@ agent.interceptors.response.use(
     async error => {
         await sleep(1000);
         store.uiStore.isIdle();
+
+         // safe access and log for debugging
+        const axiosError = error as any;
+        console.log('AXIOS ERROR', axiosError);
+        console.log('response data:', axiosError?.response?.data);
+        console.log('response headers:', axiosError?.response?.headers);
 
         const { status, data } = error.response;
         switch (status) {
