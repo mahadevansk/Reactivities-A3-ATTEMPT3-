@@ -5,9 +5,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Box, Button, Paper, Typography } from "@mui/material";
 import { LockOpen } from "@mui/icons-material";
 import TextInput from "../../app/shared/components/TextInput";
+import { Link, useLocation, useNavigate } from "react-router";
 
 export default function LoginForm() {
-    const {loginUser } = useAccount();
+    const { loginUser } = useAccount();
+    const navigate = useNavigate();
+    const location = useLocation();
+
     const { control, handleSubmit, formState: { isValid, isSubmitting } } = useForm<LoginSchema>(
         {
             mode: 'onTouched',
@@ -16,7 +20,11 @@ export default function LoginForm() {
     );
 
     const onSubmit = async (data: LoginSchema) => {
-        await loginUser.mutateAsync(data);
+        await loginUser.mutateAsync(data, {
+            onSuccess: () => {
+                navigate(location.state?.from || '/activities');
+            }
+        });
     }
 
     return ( 
@@ -39,7 +47,7 @@ export default function LoginForm() {
                 <Typography variant="h4">Sign in</Typography>
             </Box>
             <TextInput label='Email' control={control} name="email" />
-            <TextInput label='Password' control={control} name="password" />
+            <TextInput label='Password' type="Password" control={control} name="password" />
             <Button
                 type='submit'
                 disabled={!isValid || isSubmitting}
@@ -48,6 +56,12 @@ export default function LoginForm() {
             >
                 Login
             </Button>
+            <Typography sx={{ textAlign: 'center' }}>
+                Don't have an account? 
+                <Typography sx={{ml:2}} component={Link} to = '/register' color="primary">
+                    Signup
+                </Typography>
+            </Typography>
 
             
       </Paper>
