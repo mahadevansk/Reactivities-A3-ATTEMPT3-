@@ -1,3 +1,5 @@
+import { JSX } from "react/jsx-runtime"
+
 type Activity = {
     id: string
     title: string
@@ -13,7 +15,10 @@ type Activity = {
   isGoing: boolean
   isHost: boolean
   hostId: string
-    hostDisplayName: string
+  hostDisplayName: string
+  hostImageUrl: string
+
+    
 }
 
 type Profile = {
@@ -21,6 +26,11 @@ type Profile = {
   displayName: string
   bio?: string
   imageUrl?: string
+}
+
+type Photo = {
+  id: string
+  url: string
 }
 
 

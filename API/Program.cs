@@ -69,7 +69,7 @@ var app = builder.Build();
 app.UseMiddleware<ExceptionMiddleware>();
 app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod()
     .AllowCredentials()
-    .WithOrigins("http://localhost:3000", "https://localhost:3000"));
+    .WithOrigins("http://localhost:3000", "https://localhost:3000", "http://localhost:5001", "https://localhost:5001"));
 
 // Ordering of this two is important. B'cause you need to authnticate before you Authorize
 // otherwise you will get 401 unauthorized every time. 

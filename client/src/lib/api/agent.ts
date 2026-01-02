@@ -32,10 +32,17 @@ agent.interceptors.response.use(
          // safe access and log for debugging
         const axiosError = error as any;
         console.log('AXIOS ERROR', axiosError);
-        console.log('response data:', axiosError?.response?.data);
-        console.log('response headers:', axiosError?.response?.headers);
 
-        const { status, data } = error.response;
+        // If there's no response the request failed at network/TLS level
+        if (!axiosError?.response) {
+            toast.error('Network error — API unreachable. Check API server and certificate.');
+            return Promise.reject(error);
+        }
+
+        console.log('response data:', axiosError.response.data);
+        console.log('response headers:', axiosError.response.headers);
+
+        const { status, data } = axiosError.response;
         switch (status) {
             case 400:
                 if (data.errors) {
