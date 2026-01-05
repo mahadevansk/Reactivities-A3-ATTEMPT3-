@@ -9,5 +9,7 @@ public interface IUserAccessor
     Task<User> GetUserAsync();
 
     Task<User> GetUserWithPgotosAsync();
+
+    
     
 }

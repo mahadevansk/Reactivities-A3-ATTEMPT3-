@@ -22,7 +22,7 @@
   <FrameworkReference Include="Microsoft.AspNetCore.App" />
 </ItemGroup>
     <ItemGroup>
-      <Folder Include="Profiles\Commands\" />
       <Folder Include="Profiles\Queries\" />
+      <Folder Include="Profiles\Validators\" />
     </ItemGroup>
 </Project>
