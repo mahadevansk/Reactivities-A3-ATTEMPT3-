@@ -2,6 +2,7 @@ import { Box, Paper, Tab, Tabs } from "@mui/material";
 import { SyntheticEvent, useState } from "react"
 import ProfilePhotos from "./ProfilePhotos";
 import ProfileAbout from "./ProfileAbout";
+import ProfileFollowing from "./ProfileFollowing";
 
 export default function ProfileContent() {
 
@@ -15,8 +16,8 @@ export default function ProfileContent() {
     { label: 'About', content: <ProfileAbout/>},
     { label: 'Photos', content: <ProfilePhotos /> },
     { label: 'Events', content: <div>Events</div> },
-    { label: 'Followers', content: <div>Followers</div> },
-    { label: 'Following', content: <div>Following</div> }
+    { label: 'Followers', content: <ProfileFollowing activeTab={value}/>},
+    { label: 'Following', content: <ProfileFollowing activeTab={value} /> }
   ]
 
   return (
