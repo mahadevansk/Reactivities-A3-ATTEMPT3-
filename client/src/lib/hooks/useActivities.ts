@@ -1,25 +1,44 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { keepPreviousData, useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import agent from "../api/agent";
 import { useLocation } from "react-router";
 import { useAccount } from "./useAccount";
+import { useStore } from "./useStore";
 
 export const useActivities = (id?: string) => {
+
+    const { activityStore:{filter, startDate}} = useStore();
     const queryClient = useQueryClient();
     const location = useLocation();
     const { currentUser } = useAccount();
     
 
-    const { data: activities, isLoading } = useQuery({
-        queryKey: ['activities'],
-        queryFn: async () => {
-            const response = await agent.get<Activity[]>('/activities');
+    const { data: activitiesGroup, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage }
+        = useInfiniteQuery<PageList<Activity, string>>({
+        queryKey: ['activities',filter,startDate ],
+        queryFn: async ({pageParam = null}) => {
+            const response = await agent.get<PageList<Activity,string>>('/activities', {
+                params: {
+                    cursor: pageParam, 
+                    pageSize: 3, 
+                    filter,
+                    startDate
+                }
+            });
             return response.data;
-        },
+            },
+            staleTime: 1000 * 60 * 5,
+            placeholderData: keepPreviousData,
+        initialPageParam: null, 
+        getNextPageParam:(lastpage) => lastpage.nextCursor, 
         enabled: !id && location.pathname === '/activities' && 
             !!currentUser,
         
-        select: data => {
-            return data.map(activity => {
+        select: data => ({
+            ...data,
+            pages: data.pages.map((page) => ({
+                ...page, 
+                items: page.items.map(activity => {
+                
                 const host = activity.attendees.find(x => x.id === activity.hostId);
 
                 return {
@@ -28,8 +47,10 @@ export const useActivities = (id?: string) => {
                     isGoing: activity.attendees.some(x => x.id === currentUser?.id), 
                     hostImageUrl: host?.imageUrl
                 }
-            })
-        }
+                })
+            }))
+
+        })
     });
 
     const {data: activity, isLoading: isLoadingActivity} = useQuery({
@@ -129,11 +150,11 @@ export const useActivities = (id?: string) => {
 
         })
 
-
-
-
     return {
-        activities,
+        activitiesGroup,
+        isFetchingNextPage,
+        fetchNextPage,
+        hasNextPage,
         isLoading,
         updateActivity,
         createActivity,
