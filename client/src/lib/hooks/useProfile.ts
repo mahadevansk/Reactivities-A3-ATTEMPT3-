@@ -1,6 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import agent from "../api/agent"
-import { Photo, Profile, User } from "../types"
 import { useMemo } from "react"
 import { EditProfileSchema } from "../schemas/EditProfielSchema"
 

@@ -47,7 +47,7 @@ export default function UserMenu() {
                 open={open}
                 onClose={handleClose}
                 slotProps={{
-                    list: {
+                    paper: {
                         'aria-labelledby': 'basic-button',
                     },
                 }}

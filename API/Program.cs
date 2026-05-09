@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.SqlServer;
 using Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,7 +26,7 @@ builder.Services.AddControllers(opt =>
 });
 builder.Services.AddDbContext<AppDbContext>(opt =>
 {
-    opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
+    opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 builder.Services.AddCors();
 
@@ -73,17 +74,26 @@ var app = builder.Build();
 app.UseMiddleware<ExceptionMiddleware>();
 app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod()
     .AllowCredentials()
-    .WithOrigins("http://localhost:3000", "https://localhost:3000", "http://localhost:5001", "https://localhost:5001"));
+    .WithOrigins("http://localhost:3000", "https://localhost:3000",
+                 "http://localhost:3001", "https://localhost:3001",
+                 "http://localhost:3002", "https://localhost:3002",
+                 "http://localhost:5001", "https://localhost:5001",
+                 "http://localhost:5173", "https://localhost:5173"));
 
 // Ordering of this two is important. B'cause you need to authnticate before you Authorize
 // otherwise you will get 401 unauthorized every time. 
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
 app.MapControllers();
 app.MapGroup("api").MapIdentityApi<User>(); // api/login
 
 app.MapHub<CommentHub>("/comments");
+
+app.MapFallbackToController("Index", "Fallback");
 
 DeveloperExceptionPageOptions developerExceptionPageOptions = new DeveloperExceptionPageOptions
 {

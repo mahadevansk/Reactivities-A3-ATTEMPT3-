@@ -1,5 +1,4 @@
 using System;
-using System.Security.Cryptography.X509Certificates;
 using Application.Activities.DTOs;
 using Application.Core;
 using AutoMapper;
@@ -8,7 +7,6 @@ using Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
-using SQLitePCL;
 
 namespace Application.Activities.Queries;
 

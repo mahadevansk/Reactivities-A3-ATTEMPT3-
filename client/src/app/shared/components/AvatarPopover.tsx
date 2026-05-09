@@ -5,7 +5,6 @@ import { useState } from 'react';
 import { Avatar } from '@mui/material';
 import { Link } from 'react-router';
 import ProfileCard from '../../../features/Profiles/ProfileCard';
-import { Profile } from '../../../lib/types';
 
 type Props = {
     profile:Profile

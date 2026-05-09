@@ -3,7 +3,6 @@ import { Avatar, Box, Button, Card, CardContent, CardHeader, Chip, Divider, Typo
 import { Link } from "react-router";
 import { formatDate } from "../../../lib/util/util";
 import AvatarPopover from "../../../app/shared/components/AvatarPopover";
-import { Activity } from "../../../lib/types";
 
 type Props = {
   activity: Activity

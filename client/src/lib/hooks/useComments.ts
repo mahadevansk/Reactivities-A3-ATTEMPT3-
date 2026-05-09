@@ -1,7 +1,7 @@
 import { useLocalObservable } from "mobx-react-lite"
 import { HubConnection, HubConnectionBuilder, HubConnectionState } from '@microsoft/signalr'
 import {  useEffect, useRef } from "react";
-import { ChatComment } from "../types";
+
 import { runInAction } from "mobx";
 
 export const useComments = (activityId?: string) => {
